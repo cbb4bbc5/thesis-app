@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16.1
+    ports:
+      - 127.0.0.1:5432:5432
+    env_file:
+      - .env
+    networks:
+      - noteman-net
+    volumes:
+      - ./db/:/var/lib/postgresql/data/
+  noteman:
+    image: python:3.12
+    networks:
+      - noteman-net
+
+networks:
+  noteman-net:
