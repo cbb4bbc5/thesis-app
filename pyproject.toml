@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "noteman"
+version = "0.0.1"
+dependencies = [
+    'Django>=5.0',
+    'psycopg3'
+]
+
+[tool.setuptools]
+packages = ["app"]

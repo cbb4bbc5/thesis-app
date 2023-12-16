@@ -13,8 +13,16 @@ services:
       - ./db/:/var/lib/postgresql/data/
   noteman:
     image: python:3.12
+    ports: 
+      - 127.0.0.1:35329:8080
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8080"
+    depends_on:
+      - postgres
     networks:
       - noteman-net
+    volumes:
+      - ./noteman:/app/
 
 networks:
   noteman-net:
