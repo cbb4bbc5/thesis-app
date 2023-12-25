@@ -16,8 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import apps.dashboard.views
 
+# include and providing the module are both valid ways to configure
+# urls, include seems better for more than 1 route, I will see in
+# the future which one suits particular app better and reorganize
+# accoringly
 urlpatterns = [
+    path('', apps.dashboard.views.main_view, name='dashboard'),
+    path('appname/', include('apps.appname.urls')),
     path('admin/', admin.site.urls),
-    path('appname/', include('apps.appname.urls'))
 ]
