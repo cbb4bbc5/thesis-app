@@ -32,7 +32,6 @@ ALLOWED_HOSTS = ['192.168.1.19', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'apps.appname.apps.AppnameConfig',
     'apps.dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -109,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-gb'
 
 TIME_ZONE = 'UTC'
 
