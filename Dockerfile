@@ -4,7 +4,6 @@ WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1
 #COPY noteman /app
-COPY pyproject.toml /app
 #RUN cd /app
 
 COPY requirements.txt .
