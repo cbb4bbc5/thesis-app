@@ -56,7 +56,11 @@ ROOT_URLCONF = 'noteman.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # had to add this line unlinke in stakler as I guess
+            # this project has a more complex structure
+            os.path.join(BASE_DIR, 'templates'),
+         ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
