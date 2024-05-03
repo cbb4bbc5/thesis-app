@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> {{ note.name }} </title>
+    </head>
+  <body>
+    <table>
+      <tr>
+	<th> Note name </th>
+	<td> {{ note.name }} </td>
+      </tr>
+      <tr>
+	<th> Creation date </th>
+	<td> {{ note.cr_time }} </td>
+      </tr>
+      <tr>
+	<th> Resource type </th>
+	<td> {{ note.type }} </td>
+      </tr>
+      {% if note.description %}
+      <tr>
+	<th> Description </th>
+	<td> {{ note.description }} </td>
+      </tr>
+      {% endif %}
+    </table>
+    </body>
+  </html>
