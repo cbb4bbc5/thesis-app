@@ -12,7 +12,7 @@ class Note(models.Model):
     # TODO: use choices for type_id, like here
     # https://stackoverflow.com/questions/48040008/django-restrict-data-that-can-be-given-to-model-field
     type = models.IntegerField()
-    description = models.CharField(max_length=200, blank=True)
+    description = models.TextField(blank=True)
 
 """Example code (copy for tests)
 import apps.dashboard.models
@@ -31,7 +31,7 @@ but better to create it from the dashboard
 class Connection(models.Model):
      note = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='note')
      source = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='source')
-     comment = models.CharField(max_length=200, blank=True)
+     comment = models.TextField(blank=True)
 
      class Meta:
          # https://stackoverflow.com/questions/63649333/how-to-add-constraint-for-2-fields-not-having-the-same-value
