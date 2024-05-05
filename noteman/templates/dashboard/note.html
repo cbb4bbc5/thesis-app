@@ -7,6 +7,7 @@
     <title> {{ note.name }} </title>
     </head>
   <body>
+    <div>
     <table>
       <tr>
 	<th> Note name </th>
@@ -27,5 +28,18 @@
       </tr>
       {% endif %}
     </table>
+    <div class="tags">
+      <h2>Tags</h2>
+      {% if tags %}
+      {% for tag in tags %}
+      <div>
+	{{ tag.name }}
+      </div>
+      {% endfor %}
+      {% else %}
+      <p> This note does not have any tags </p>
+      {% endif %}
+    </div>
+    </div>
     </body>
   </html>
