@@ -56,6 +56,7 @@ class Tag(models.Model):
             )
         ]
 
+
 class NoteTag(models.Model):
     note = models.ForeignKey(Note, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)

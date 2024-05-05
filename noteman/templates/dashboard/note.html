@@ -7,10 +7,11 @@
     <title> {{ note.name }} </title>
     </head>
   <body>
-    <div>
+    <div class="note">
+      <h2>Note</h2>
     <table>
       <tr>
-	<th> Note name </th>
+	<th> Name </th>
 	<td> {{ note.name }} </td>
       </tr>
       <tr>
@@ -33,6 +34,7 @@
       {% if tags %}
       {% for tag in tags %}
       <div>
+	<!-- TODO: make these tags into urls and style them with CSS -->
 	{{ tag.name }}
       </div>
       {% endfor %}
@@ -40,6 +42,18 @@
       <p> This note does not have any tags </p>
       {% endif %}
     </div>
+<div class="sources">
+  <h2>References</h2>
+  {% if sources %}
+  {% for source in sources %}
+  <div>
+    <a href="{% url 'dashboard:note_detail' source.id %}"> {{ source.name }}</a>
+  </div>
+  {% endfor %}
+  {% else %}
+  <p> This note does not reference any other notes </p>
+  {% endif %}
+</div>
     </div>
     </body>
   </html>

@@ -8,10 +8,10 @@
     </head>
   <body>
     {% if notes %}
+      <!-- TODO: maybe factor this for loop and the one in notes.html as they are quite similar -->
     {% for note in notes %}
     <div>
-      <!-- TODO: make these into urls as well -->
-      {{ note.name }}
+    <a href="{% url 'dashboard:note_detail' note.id %}"> {{ note.name }}</a>
       </div>
     {% endfor %}
     {% else %}
