@@ -114,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-gb'
 
+# TODO: consider setting dynamically this to take into account differences in timezone
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
