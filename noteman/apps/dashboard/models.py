@@ -5,6 +5,7 @@ from django.db.models.functions import Now
 
 
 class Note(models.Model):
+    # TODO: note name probably should be unique since it is supposed to be file path in the end
     name = models.CharField(max_length=200)
     # db_default or default
     # https://stackoverflow.com/questions/77665050/what-does-the-new-field-db-default-of-django-5-imply-should-we-use-it-by-def
