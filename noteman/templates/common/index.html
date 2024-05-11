@@ -4,9 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto"
+    />
     <title>Noteman</title>
     </head>
   <body>
-    <a href="{%url 'dashboard:all_notes' %}">List all notes</a>
+    <header class="main_header">
+	<h1 class="main_header__header">Noteman</h1>
+    </header>
+    <div class="content">
+    <div class="action">
+	<h2 class="action__header">Manage your notes</h2>
+	<a class="action__link" href="{%url 'dashboard:all_notes' %}">Go to notes</a>
+    </div>
+    <div class="action">
+	<h2 class="action__headerr">Manage your tags</h2>
+	<a class="action__link" href="{%url 'dashboard:all_tags' %}">Go to tags</a>
+    </div>
+    </div>
     </body>
   </html>

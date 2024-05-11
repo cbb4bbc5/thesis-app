@@ -12,6 +12,7 @@
     <table>
       <tr>
 	<th> Name </th>
+	<!-- TODO: make note.name into a URL to the actual local file?  -->
 	<td> {{ note.name }} </td>
       </tr>
       <tr>
@@ -33,10 +34,10 @@
       <h2>Tags</h2>
       {% if tags %}
       {% for tag in tags %}
-      <div>
+      <span class="tag-item">
 	<!-- TODO: make these tags into urls and style them with CSS -->
 	{{ tag.name }}
-      </div>
+      </span>
       {% endfor %}
       {% else %}
       <p> This note does not have any tags </p>
