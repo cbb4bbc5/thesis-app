@@ -15,6 +15,10 @@ class Note(models.Model):
     type = models.IntegerField()
     description = models.TextField(blank=True)
 
+    def __str__(self):
+        return f'{self.name}'
+
+
 """Example code (copy for tests)
 import apps.dashboard.models
 
@@ -56,6 +60,9 @@ class Tag(models.Model):
                 fields=['name'], name='unique_tag_name'
             )
         ]
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class NoteTag(models.Model):

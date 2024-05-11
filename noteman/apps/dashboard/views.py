@@ -11,11 +11,12 @@ def index(request):
 
 def all_notes(request):
     template = loader.get_template('dashboard/all_notes.html')
-    notes = Note.objects.all()
+    notes = Note.objects.order_by('-cr_time')
     context = {
         'notes' : notes,
     }
     return HttpResponse(template.render(context, request))
+
 
 def note_detail(request, note_id):
     template = loader.get_template('dashboard/note.html')
@@ -33,5 +34,14 @@ def note_detail(request, note_id):
         'note' : note,
         'tags' : tags,
         'sources' : predecessors,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def all_tags(request):
+    template = loader.get_template('dashboard/all_tags.html')
+    tags = Tag.objects.order_by('name')
+    context = {
+        'tags' : tags,
     }
     return HttpResponse(template.render(context, request))

@@ -24,3 +24,13 @@ class TagSerializer(serializers.ModelSerializer):
             'id',
             'name',
         ]
+
+
+class NoteTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NoteTag
+        fields = [
+            'id',
+            'note',
+            'tag',
+        ]

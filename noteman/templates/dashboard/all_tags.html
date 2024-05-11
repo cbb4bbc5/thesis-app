@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All tags list</title>
+    </head>
+  <body>
+    <h2>All tags used by noteman</h2>
+    {% if tags %}
+    {% for tag in tags %}
+    <div class="tag-item">
+      {{ tag.name }}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p> No tags yet </p>
+    {% endif %}
+    </body>
+  </html>
