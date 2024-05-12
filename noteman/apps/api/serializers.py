@@ -14,6 +14,7 @@ class NoteSerializer(serializers.ModelSerializer):
             'cr_time',
             'type',
             'description',
+            'tags',
         ]
 
 

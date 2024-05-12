@@ -1,7 +1,7 @@
+from apps.dashboard.models import Note, NoteTag, Tag
 from rest_framework import viewsets
 
-from apps.dashboard.models import Note, Tag, NoteTag
-from .serializers import NoteSerializer, TagSerializer, NoteTagSerializer
+from .serializers import NoteSerializer, NoteTagSerializer, TagSerializer
 
 # https://www.django-rest-framework.org/api-guide/generic-views/#generic-views
 # TODO: remove branding? https://stackoverflow.com/questions/51393960/django-rest-browsable-api-template-change
