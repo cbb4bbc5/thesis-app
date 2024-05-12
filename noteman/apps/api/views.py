@@ -4,6 +4,7 @@ from apps.dashboard.models import Note, Tag, NoteTag
 from .serializers import NoteSerializer, TagSerializer, NoteTagSerializer
 
 # https://www.django-rest-framework.org/api-guide/generic-views/#generic-views
+# TODO: remove branding? https://stackoverflow.com/questions/51393960/django-rest-browsable-api-template-change
 
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.order_by('-cr_time')
@@ -16,5 +17,5 @@ class TagViewSet(viewsets.ModelViewSet):
 
 
 class NoteTagViewSet(viewsets.ModelViewSet):
-    queryset = NoteTag.objects.order_by('note', 'tag')
+    queryset = NoteTag.objects.all()
     serializer_class = NoteTagSerializer
