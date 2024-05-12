@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.template import loader
 
 from .models import Note, NoteTag, Tag, Connection
+from .forms import NoteForm, NoteTagForm
+
+from django.forms import formset_factory
 
 def index(request):
     template = loader.get_template('common/index.html')
@@ -44,4 +47,21 @@ def all_tags(request):
     context = {
         'tags' : tags,
     }
+    return HttpResponse(template.render(context, request))
+
+
+def add_note(request):
+    template = loader.get_template('dashboard/add_note.html')
+    context = {}
+    form_note = NoteForm()
+    # TODO: combine note form and tag form into one
+    form_tag = formset_factory(NoteTagForm)
+    context['form_tag'] = form_tag
+    if request.POST:
+        form_note = NoteForm(request.POST)
+        context['msg'] = 'Submitted'
+        if form_note.is_valid():
+            form_note.save()
+            context['msg'] = 'Invalid'
+    context['form_note'] = form_note
     return HttpResponse(template.render(context, request))

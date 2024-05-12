@@ -8,6 +8,8 @@
     </head>
   <body>
     <h2>All files tracked by noteman</h2>
+    <!-- TODO: add a button -->
+    <!-- <button class="note styled" onlick="{% url 'dashboard:add_note' %}">Add a new note</button> -->
     {% if notes %}
       <!-- TODO: maybe factor this for loop and the one in notes.html as they are quite similar -->
     {% for note in notes %}

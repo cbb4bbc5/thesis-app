@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Add a new note</title>
+    </head>
+    <body>
+	<header class="main_header">
+	    <h2 class="main_header__header">Add a new note</h2>
+	</header>
+	<div class="form_wrapper">
+	    <form action="" method="POST">
+		{% csrf_token %}
+		{{ form_note }}
+		<input type="submit" value="Submit">
+	    </form>
+	</div>
+    </body>
+</html>
