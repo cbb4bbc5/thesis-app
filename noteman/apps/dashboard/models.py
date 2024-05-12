@@ -9,7 +9,7 @@ class Note(models.Model):
     name = models.CharField(max_length=200)
     # db_default or default
     # https://stackoverflow.com/questions/77665050/what-does-the-new-field-db-default-of-django-5-imply-should-we-use-it-by-def
-    cr_time = models.DateTimeField(default=django.utils.timezone.now)
+    cr_time = models.DateTimeField(default=django.utils.timezone.now, verbose_name='creation time')
     # TODO: use choices for type_id, like here
     # https://stackoverflow.com/questions/48040008/django-restrict-data-that-can-be-given-to-model-field
     type = models.IntegerField()
