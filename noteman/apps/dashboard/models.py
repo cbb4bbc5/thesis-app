@@ -2,6 +2,20 @@ import django.utils
 from django.db import models
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name'], name='unique_tag_name'
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.name}'
+
+
 class Note(models.Model):
     # TODO: note name probably should be unique since it is supposed to be file path in the end
     name = models.CharField(max_length=200)
@@ -13,9 +27,24 @@ class Note(models.Model):
     # https://stackoverflow.com/questions/48040008/django-restrict-data-that-can-be-given-to-model-field
     type = models.IntegerField()
     description = models.TextField(blank=True)
+    tags = models.ManyToManyField(Tag, through="NoteTag")
 
     def __str__(self):
         return f'{self.name}'
+
+
+class NoteTag(models.Model):
+    note = models.ForeignKey(Note, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            # https://code.djangoproject.com/wiki/MultipleColumnPrimaryKeys
+            # good replacement for composite primary key in django
+            models.UniqueConstraint(
+                fields=['note', 'tag'], name='unique_tags'
+            ),
+        ]
 
 
 """Example code (copy for tests)
@@ -51,29 +80,3 @@ class Connection(models.Model):
          ]
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['name'], name='unique_tag_name'
-            )
-        ]
-
-    def __str__(self):
-        return f'{self.name}'
-
-
-class NoteTag(models.Model):
-    note = models.ForeignKey(Note, on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-
-    class Meta:
-        constraints = [
-            # https://code.djangoproject.com/wiki/MultipleColumnPrimaryKeys
-            # good replacement for composite primary key in django
-            models.UniqueConstraint(
-                fields=['note', 'tag'], name='unique_tags'
-            ),
-        ]

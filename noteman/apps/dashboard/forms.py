@@ -1,9 +1,10 @@
 from django import forms
 
-from .models import Note, NoteTag
+from .models import Note, Tag
 
 
 class NoteForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
     class Meta:
         model = Note
         fields = [
@@ -11,13 +12,5 @@ class NoteForm(forms.ModelForm):
             'cr_time',
             'type',
             'description',
-        ]
-
-
-class NoteTagForm(forms.ModelForm):
-    class Meta:
-        model = NoteTag
-        fields = [
-            'note',
-            'tag',
+            'tags',
         ]

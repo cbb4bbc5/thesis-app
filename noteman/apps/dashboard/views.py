@@ -2,7 +2,7 @@ from django.forms import formset_factory
 from django.http import HttpResponse
 from django.template import loader
 
-from .forms import NoteForm, NoteTagForm
+from .forms import NoteForm
 from .models import Connection, Note, NoteTag, Tag
 
 
@@ -34,9 +34,9 @@ def note_detail(request, note_id):
     predecessors = [connection.source for connection in connections]
     # TODO: take errors into account
     context = {
-        'note' : note,
-        'tags' : tags,
-        'sources' : predecessors,
+        'note': note,
+        'tags': tags,
+        'sources': predecessors,
     }
     return HttpResponse(template.render(context, request))
 
@@ -45,7 +45,7 @@ def all_tags(request):
     template = loader.get_template('dashboard/all_tags.html')
     tags = Tag.objects.order_by('name')
     context = {
-        'tags' : tags,
+        'tags': tags,
     }
     return HttpResponse(template.render(context, request))
 
@@ -55,8 +55,6 @@ def add_note(request):
     context = {}
     form_note = NoteForm()
     # TODO: combine note form and tag form into one
-    form_tag = formset_factory(NoteTagForm)
-    context['form_tag'] = form_tag
     if request.POST:
         form_note = NoteForm(request.POST)
         context['msg'] = 'Submitted'
