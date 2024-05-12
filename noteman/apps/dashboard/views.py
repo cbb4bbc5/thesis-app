@@ -1,10 +1,10 @@
+from django.forms import formset_factory
 from django.http import HttpResponse
 from django.template import loader
 
-from .models import Note, NoteTag, Tag, Connection
 from .forms import NoteForm, NoteTagForm
+from .models import Connection, Note, NoteTag, Tag
 
-from django.forms import formset_factory
 
 def index(request):
     template = loader.get_template('common/index.html')

@@ -1,7 +1,5 @@
 import django.utils
-
 from django.db import models
-from django.db.models.functions import Now
 
 
 class Note(models.Model):
@@ -9,7 +7,8 @@ class Note(models.Model):
     name = models.CharField(max_length=200)
     # db_default or default
     # https://stackoverflow.com/questions/77665050/what-does-the-new-field-db-default-of-django-5-imply-should-we-use-it-by-def
-    cr_time = models.DateTimeField(default=django.utils.timezone.now, verbose_name='creation time')
+    cr_time = models.DateTimeField(default=django.utils.timezone.now,
+                                   verbose_name='creation time')
     # TODO: use choices for type_id, like here
     # https://stackoverflow.com/questions/48040008/django-restrict-data-that-can-be-given-to-model-field
     type = models.IntegerField()
@@ -54,6 +53,7 @@ class Connection(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=200, unique=True)
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -68,6 +68,7 @@ class Tag(models.Model):
 class NoteTag(models.Model):
     note = models.ForeignKey(Note, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+
     class Meta:
         constraints = [
             # https://code.djangoproject.com/wiki/MultipleColumnPrimaryKeys
