@@ -13,7 +13,12 @@
 	<div class="form_wrapper">
 	    <form action="" method="POST">
 		{% csrf_token %}
-		{{ form_note }}
+		{{ note_form }}
+		<h2>References</h2>
+		{{ connection_formset.management_form }}
+		{% for form in connection_formset %}
+		{{ form.as_p }}
+		{% endfor %}
 		<input type="submit" value="Submit">
 	    </form>
 	</div>

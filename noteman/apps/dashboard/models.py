@@ -28,6 +28,9 @@ class Note(models.Model):
     type = models.IntegerField()
     description = models.TextField(blank=True)
     tags = models.ManyToManyField(Tag, through="NoteTag")
+    references = models.ManyToManyField(
+        "Note", through="Connection", symmetrical=False, related_name="related_to"
+    )
 
     def __str__(self):
         return f'{self.name}'
