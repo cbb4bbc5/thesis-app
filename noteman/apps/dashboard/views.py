@@ -14,8 +14,10 @@ def index(request):
 def all_notes(request):
     template = loader.get_template('dashboard/all_notes.html')
     notes = Note.objects.order_by('-cr_time')
+    tags = Tag.objects.order_by('name')
     context = {
-        'notes' : notes,
+        'notes': notes,
+        'tags': tags,
     }
     return HttpResponse(template.render(context, request))
 

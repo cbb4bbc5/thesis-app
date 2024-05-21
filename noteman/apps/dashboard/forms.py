@@ -24,8 +24,6 @@ class NoteForm(forms.ModelForm):
         instance = forms.ModelForm.save(self)
         instance.tags.clear()
         instance.tags.add(*self.cleaned_data['tags'])
-        # instance.references.clear()
-        # instance.references.add(*self.cleaned_data['references'])
         return instance
 
 

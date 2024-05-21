@@ -33,11 +33,9 @@
     <div class="tags">
       <h2>Tags</h2>
       {% if tags %}
-      {% for tag in tags %}
-      <span class="tag-item">
-	<!-- TODO: make these tags into urls and style them with CSS -->
-	{{ tag.name }}
-      </span>
+      {% for tag in tags|dictsort:"name" %}
+	<!-- TODO: make these tags into urls? and style them with CSS -->
+				<span class="tag">{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
       {% endfor %}
       {% else %}
       <p> This note does not have any tags </p>

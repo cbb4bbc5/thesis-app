@@ -1,24 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All notes</title>
-    </head>
-  <body>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .selected-items {
+            margin-top: 20px;
+        }
+        .selected-item {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 3px;
+        }
+        .note {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
     <h2>All files tracked by noteman</h2>
-    <!-- TODO: add a button -->
-    <!-- <button class="note styled" onlick="{% url 'dashboard:add_note' %}">Add a new note</button> -->
     {% if notes %}
-      <!-- TODO: maybe factor this for loop and the one in notes.html as they are quite similar -->
-    {% for note in notes %}
-    <div>
-    <a href="{% url 'dashboard:note_detail' note.id %}"> {{ note.name }}</a>
-      </div>
-    {% endfor %}
+	<form>
+	    <select id="search-bar" style="width: 100%;" multiple>
+		{% for tag in tags %}
+		    <option value="{{ tag.name }}">{{ tag.name }}</option>
+		{% endfor %}
+	    </select>
+	</form>
+
+	<div id="notes">
+	    {% for note in notes %}
+		<div class="note" data-tags="{% for tag in note.tags.all %}{{ tag.name }},{% endfor %}">
+	<a href="{% url 'dashboard:note_detail' note.id %}"> {{ note.name }}</a>
+		    <div class="tags">
+			{% if note.tags.all %}
+			    {% for tag in note.tags.all|dictsort:"name" %}
+				<span class="tag">{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
+			    {% endfor %}
+			{% else %}
+			    <strong> No tags </strong>
+			{% endif %}
+		    </div>
+		</div>
+	    {% endfor %}
     {% else %}
-    <p> No notes yet </p>
+	<p> No notes yet </p>
     {% endif %}
-    </body>
-  </html>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search-bar').select2({
+                placeholder: 'Search for tags',
+                allowClear: true,
+
+            });
+
+            function removeItem(item) {
+                $('#selected-item-' + item).remove();
+                var newOption = new Option(item, item, false, false);
+                $('#search-bar').append(newOption).trigger('change.select2');
+                filterNotes();
+            }
+
+            $('#search-bar').on('select2:select', function (e) {
+                var item = e.params.data.id;
+                var itemText = e.params.data.text;
+                
+                $('#selected-items').append(
+                    '<span class="selected-item" id="selected-item-' + item + '">' +
+                    itemText +
+                    '<span class="remove-item" onclick="removeItem(\'' + item + '\')">x</span>' +
+                    '</span>'
+                );
+
+                filterNotes();
+            });
+
+            $('#search-bar').on('select2:unselect', function (e) {
+                var item = e.params.data.id;
+                $('#selected-item-' + item).remove();
+                filterNotes();
+            });
+
+            function filterNotes() {
+                var selectedTags = $('#search-bar').val() || [];
+
+                $('.note').each(function() {
+                    var note = $(this);
+                    var noteTags = note.data('tags').split(',');
+
+                    var showNote = selectedTags.every(tag => noteTags.includes(tag));
+
+                    if (showNote) {
+                        note.show();
+                    } else {
+                        note.hide();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
