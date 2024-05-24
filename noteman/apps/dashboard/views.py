@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 
-from .forms import NoteForm, ConnectionFormSet
+from .forms import NoteForm, ConnectionFormSet, TagFormset
 from .models import Connection, Note, NoteTag, Tag
 
 
@@ -45,8 +45,14 @@ def note_detail(request, note_id):
 def all_tags(request):
     template = loader.get_template('dashboard/all_tags.html')
     tags = Tag.objects.order_by('name')
+    tag_formset = TagFormset(queryset=Tag.objects.none())
+    if request.POST:
+        tag_formset = TagFormset(request.POST)
+        if tag_formset.is_valid():
+            tag_formset.save()
     context = {
         'tags': tags,
+        'tag_formset': tag_formset,
     }
     return HttpResponse(template.render(context, request))
 
@@ -54,9 +60,9 @@ def all_tags(request):
 def add_note(request):
     template = loader.get_template('dashboard/add_note.html')
     context = {}
+    notes = Note.objects.all()
     note_form = NoteForm()
     connection_formset = ConnectionFormSet()
-    # TODO: combine note form and tag form into one
     if request.POST:
         note_form = NoteForm(request.POST)
         connection_formset = ConnectionFormSet(request.POST)
@@ -66,6 +72,9 @@ def add_note(request):
             for connection in connections:
                 connection.note = note
                 connection.save()
-    context['note_form'] = note_form
-    context['connection_formset'] = connection_formset
+    context = {
+        'note_form': note_form,
+        'connection_formset': connection_formset,
+        'notes': notes,
+    }
     return HttpResponse(template.render(context, request))

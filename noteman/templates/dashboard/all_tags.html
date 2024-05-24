@@ -1,21 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>All tags list</title>
-    </head>
-  <body>
-    <h2>All tags used by noteman</h2>
-    {% if tags %}
-    {% for tag in tags %}
-    <div class="tag-item">
-      {{ tag.name }}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All tags list</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h2>Add new tags</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div id="formset-container">
+      {{ tag_formset.management_form }}
+      {% for form in tag_formset %}
+        <div class="form-row">
+          {{ form.name.label_tag }} {{ form.name }}
+          <button type="button" class="delete-form-row">Delete</button>
+        </div>
+      {% endfor %}
     </div>
+    <button type="button" id="add-more">Add More</button>
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>All tags used by noteman</h2>
+  {% if tags %}
+    {% for tag in tags %}
+      <div class="tag-item">
+        {{ tag.name }}
+      </div>
     {% endfor %}
-    {% else %}
-    <p> No tags yet </p>
-    {% endif %}
-    </body>
-  </html>
+  {% else %}
+    <p>No tags yet</p>
+  {% endif %}
+
+  <script>
+    $(document).ready(function() {
+      var formIdx = 1; // hardcoded for now, might pass extra later
+      
+      $("#add-more").click(function() {
+        var formHtml = `
+          <div class="form-row">
+            <label for="id_form-${formIdx}-name">Name:</label>
+            <input type="text" name="form-${formIdx}-name" id="id_form-${formIdx}-name">
+            <button type="button" class="delete-form-row">Delete</button>
+          </div>`;
+        $("#formset-container").append(formHtml);
+        
+        // Update the total form count in the management form
+        var totalForms = $("#id_form-TOTAL_FORMS");
+        totalForms.val(parseInt(totalForms.val()) + 1);
+        
+        formIdx++;
+      });
+
+      // Event delegation to handle dynamic deletion
+      $(document).on("click", ".delete-form-row", function() {
+        $(this).closest('.form-row').remove();
+        var totalForms = $("#id_form-TOTAL_FORMS");
+        totalForms.val(parseInt(totalForms.val()) - 1);
+      });
+    });
+  </script>
+</body>
+</html>
