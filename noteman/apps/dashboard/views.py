@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
+from django.shortcuts import redirect
 
 from .forms import NoteForm, ConnectionFormSet, TagFormset
 from .models import Connection, Note, NoteTag, Tag
@@ -32,7 +33,7 @@ def note_detail(request, note_id):
     # also this seems more important: https://docs.djangoproject.com/en/5.0/ref/models/querysets/
     tags = [nt.tag for nt in note_tags]
     connections = Connection.objects.filter(note__id=note_id)
-    predecessors = [connection.source for connection in connections]
+    # predecessors = [connection.source for connection in connections]
     # TODO: take errors into account
     context = {
         'note': note,
@@ -50,6 +51,7 @@ def all_tags(request):
         tag_formset = TagFormset(request.POST)
         if tag_formset.is_valid():
             tag_formset.save()
+            return redirect('dashboard:all_tags')
     context = {
         'tags': tags,
         'tag_formset': tag_formset,
@@ -72,6 +74,7 @@ def add_note(request):
             for connection in connections:
                 connection.note = note
                 connection.save()
+            return redirect('dashboard:add_note')
     context = {
         'note_form': note_form,
         'connection_formset': connection_formset,

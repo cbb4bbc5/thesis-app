@@ -9,7 +9,7 @@
 </head>
 <body>
   <h2>Add new tags</h2>
-  <form method="post">
+  <form id="tag-form" class="tag-form" method="post">
     {% csrf_token %}
     <div id="formset-container">
       {{ tag_formset.management_form }}
@@ -38,7 +38,10 @@
   <script>
     $(document).ready(function() {
       var formIdx = 1; // hardcoded for now, might pass extra later
-      
+
+        var totalForms = $("#id_form-TOTAL_FORMS");
+        totalForms.val(1);
+
       $("#add-more").click(function() {
 	  // I opted here for hardcoded html because this form is simpler
 	  // than adding connections for notes
