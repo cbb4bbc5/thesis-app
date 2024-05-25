@@ -43,10 +43,11 @@
     </div>
 <div class="sources">
   <h2>References</h2>
-  {% if sources %}
-  {% for source in sources %}
+  {% if connections %}
+  {% for connection in connections %}
   <div>
-    <a href="{% url 'dashboard:note_detail' source.id %}"> {{ source.name }}</a>
+    <a href="{% url 'dashboard:note_detail' connection.source.id %}"> {{ connection.source.name }}</a>
+    {{ connection.comment }}
   </div>
   {% endfor %}
   {% else %}

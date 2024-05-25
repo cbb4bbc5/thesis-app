@@ -40,6 +40,8 @@
       var formIdx = 1; // hardcoded for now, might pass extra later
       
       $("#add-more").click(function() {
+	  // I opted here for hardcoded html because this form is simpler
+	  // than adding connections for notes
         var formHtml = `
           <div class="form-row">
             <label for="id_form-${formIdx}-name">Name:</label>
@@ -60,6 +62,9 @@
         $(this).closest('.form-row').remove();
         var totalForms = $("#id_form-TOTAL_FORMS");
         totalForms.val(parseInt(totalForms.val()) - 1);
+	  // I think decrementing should also be here even though
+	  // I initially forgot to add it
+	formIdx--;
       });
     });
   </script>

@@ -27,37 +27,36 @@
         <h2 class="main_header__header">Add a new note</h2>
     </header>
     <div class="form_wrapper">
-        <form action="" method="POST">
+        <form action="" method="POST" autocomplete="off">
             {% csrf_token %}
             {{ note_form.as_p }}
 	    {{ note_form.errors }}
             <h2>References</h2>
             {{ connection_formset.management_form }}
-            <div id="formset">
+            <div id="formset-container">
                 {% for form in connection_formset %}
-		<div class="connection-row">
 		{{ form.errors }}
                     <div class="form-row">
                         {{ form.source.label_tag }} {{ form.source }}
                         {{ form.comment.label_tag }} {{ form.comment }}
 	    <button type="button" id="deleteConnection" class="delete-connection">Delete Connection</button>
                     </div>
-		</div>
                 {% endfor %}
             </div>
-            <!-- <button id="sendButton" type="submit">Send</button> -->
             <button type="button" id="addConnection">Add Connection</button>
 	    <br>
-<input type="submit" value="Submit">
+            <button id="sendButton" type="submit">Send</button>
         </form>
     </div>
     <script>
-        $(function() {
+        $(document).ready(function() {
+	    var formIdx = 1;
             var notes = [
                 {% for note in notes %}
                     { label: "{{ note.name }}", value: "{{ note.id }}" },
                 {% endfor %}
             ];
+	    var firstRow = $(".form-row:last"); 
 
             function applyAutocomplete(selector) {
                 $(selector).autocomplete({
@@ -85,20 +84,63 @@
                 });
             });
 	    $('#addConnection').click(function() {
-                var formCount = $('#formset .connection-row').length;
-                var newForm = $('#formset .connection-row:last').clone(true);
-                newForm.find('input, select').each(function() {
-                    var name = $(this).attr('name').replace('-' + (formCount - 1) + '-', '-' + formCount + '-');
+		// probably wont use formhtml
+		var formHtml = `
+		    <div class="form-row">
+			<label for="id_note-${formIdx}-source">Source:</label>
+			    <select name="note-${formIdx}-source" id="id_note-${formIdx}-source"> </select>
+			<label for="id_note-${formIdx}-comment">Comment:</label>
+<textarea name="note-${formIdx}-comment" cols="40" rows="10" id="id_note-${formIdx}-comment"></textarea>
+			{% for note in notes %}
+			<option value="{{note.id}}">{{note.name}}</option>
+			{% endfor %}
+			</div>
+		`;
+		/* newDiv = $(".form-row").clone(); */
+		/* $("$formset-container").append(newDiv); */
+                /* applyAutocomplete(newForm.find('.autocomplete')); */
+		newRow = $(".form-row:last").clone();
+		/* console.log(firstRow); */
+		/* console.log($('.form-row').length); */
+		if ($('.form-row').length === 0) {
+		    // if a user deleted all forms for connections for some reason
+		    // but in the end decided to create a connection nonetheless
+		    // that it is why I store a first row at the beginning of the
+		    // function
+		    newRow = firstRow;
+		}
+		/* console.log(newRow.find()) */
+		newRow.find('input, select').each(function() {
+                    var name = $(this).attr('name').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
                     $(this).attr('name', name);
+                    var newId = $(this).attr('id').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
+                    $(this).attr('id', newId);
                     $(this).val('');
                 });
-		/* newForm.find('.delete-connection').remove(); */
-                $('#formset').append(newForm);
-                applyAutocomplete(newForm.find('.autocomplete'));
+		newRow.find('input, textarea').each(function() {
+                    var name = $(this).attr('name').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
+                    $(this).attr('name', name);
+                    var newId = $(this).attr('id').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
+                    $(this).attr('id', newId);
+                    $(this).val('');
+                });
+		newRow.find('label').each(function() {
+                    var newFor = $(this).attr('for').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
+                    $(this).attr('for', newFor);
+                });
+		newRow.appendTo('#formset-container')
+		var totalForms = $("#id_note-TOTAL_FORMS");
+
+		totalForms.val(parseInt(totalForms.val()) + 1);
+		formIdx++;
             });
 
-            $('#deleteConnection').click(function() {
-                $(this).closest('.connection-row').remove();
+            $(document).on("click", ".delete-connection", function() {
+		console.log('about to delete connection');
+                $(this).closest('.form-row').remove();
+		var totalForms = $("#id_note-TOTAL_FORMS");
+		totalForms.val(parseInt(totalForms.val()) - 1);
+		formIdx--;
             });
         });
     </script>

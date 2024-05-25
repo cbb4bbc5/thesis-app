@@ -37,7 +37,7 @@ def note_detail(request, note_id):
     context = {
         'note': note,
         'tags': tags,
-        'sources': predecessors,
+        'connections': connections,
     }
     return HttpResponse(template.render(context, request))
 
