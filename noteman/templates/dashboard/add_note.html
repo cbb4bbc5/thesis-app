@@ -13,6 +13,9 @@
             padding: 10px;
             margin: 20px;
         }
+	.connection-row {
+            margin-bottom: 10px;
+        }
         #sendButton {
             padding: 10px 20px;
             margin-left: 20px;
@@ -32,14 +35,19 @@
             {{ connection_formset.management_form }}
             <div id="formset">
                 {% for form in connection_formset %}
+		<div class="connection-row">
 		{{ form.errors }}
                     <div class="form-row">
                         {{ form.source.label_tag }} {{ form.source }}
                         {{ form.comment.label_tag }} {{ form.comment }}
+	    <button type="button" id="deleteConnection" class="delete-connection">Delete Connection</button>
                     </div>
+		</div>
                 {% endfor %}
             </div>
             <!-- <button id="sendButton" type="submit">Send</button> -->
+            <button type="button" id="addConnection">Add Connection</button>
+	    <br>
 <input type="submit" value="Submit">
         </form>
     </div>
@@ -75,6 +83,22 @@
                 $('.autocomplete').each(function() {
                     selectedTexts.push($(this).val());
                 });
+            });
+	    $('#addConnection').click(function() {
+                var formCount = $('#formset .connection-row').length;
+                var newForm = $('#formset .connection-row:last').clone(true);
+                newForm.find('input, select').each(function() {
+                    var name = $(this).attr('name').replace('-' + (formCount - 1) + '-', '-' + formCount + '-');
+                    $(this).attr('name', name);
+                    $(this).val('');
+                });
+		/* newForm.find('.delete-connection').remove(); */
+                $('#formset').append(newForm);
+                applyAutocomplete(newForm.find('.autocomplete'));
+            });
+
+            $('#deleteConnection').click(function() {
+                $(this).closest('.connection-row').remove();
             });
         });
     </script>

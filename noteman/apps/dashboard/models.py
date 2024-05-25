@@ -32,6 +32,13 @@ class Note(models.Model):
         "Note", through="Connection", symmetrical=False, related_name="related_to"
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name'], name='unique_note_name'
+            ),
+        ]
+
     def __str__(self):
         return f'{self.name}'
 
@@ -48,20 +55,6 @@ class NoteTag(models.Model):
                 fields=['note', 'tag'], name='unique_tags'
             ),
         ]
-
-
-"""Example code (copy for tests)
-import apps.dashboard.models
-
-n1 = apps.dashboard.models.Note.objects.get_or_create(name='First note', type=1, description='this is a first note')[0]
-n2 = apps.dashboard.models.Note.objects.get_or_create(name='Second note', type=1, description='this is a second note')[0]
-n3 = apps.dashboard.models.Note.objects.get_or_create(name='Third note', type=1, description='this is a third note')[0]
-
-t1 = apps.dashboard.models.Tag.objects.get_or_create(name='red')[0]
-t2 = apps.dashboard.models.Tag.objects.get_or_create(name='blue')[0]
-t3 = apps.dashboard.models.Tag.objects.get_or_create(name='green')[0]
-but better to create it from the dashboard
-"""
 
 
 class Connection(models.Model):
@@ -81,5 +74,3 @@ class Connection(models.Model):
                  fields=['note', 'source'], name='unique_sources'
              )
          ]
-
-
