@@ -25,6 +25,7 @@
   </form>
 
   <h2>All tags used by noteman</h2>
+  <div class="tag-container">
   {% if tags %}
     {% for tag in tags %}
       <div class="tag-item">
@@ -34,33 +35,62 @@
   {% else %}
     <p>No tags yet</p>
   {% endif %}
-
+  </div>
   <script>
     $(document).ready(function() {
       var formIdx = 1; // hardcoded for now, might pass extra later
 
         var totalForms = $("#id_form-TOTAL_FORMS");
         totalForms.val(1);
+	var firstRow = $(".form-row:last");
+
+	function updateFormRows() {
+	    $(document).find('.form-row').each(function(index) {
+		splitFor = $(this).find('label').attr('for').split('-');
+		splitFor[1] = String(index);
+		newFor = splitFor.join('-');
+		/* console.log(newFor); */
+		$(this).find('label').attr('for', newFor);
+		$(this).find('input, text').attr('id', newFor);
+		splitName = $(this).find('input, text').attr('name').split('-');
+		splitName[1] = String(index);
+		newName = splitName.join('-');
+		/* console.log(newName); */
+		$(this).find('input, text').attr('name', newName);
+	    });
+	}
 
       $("#add-more").click(function() {
 	  // I opted here for hardcoded html because this form is simpler
 	  // than adding connections for notes
-        var formHtml = `
-          <div class="form-row">
-            <label for="id_form-${formIdx}-name">Name:</label>
-            <input type="text" name="form-${formIdx}-name" id="id_form-${formIdx}-name">
-            <button type="button" class="delete-form-row">Delete</button>
-          </div>`;
-        $("#formset-container").append(formHtml);
+	newRow = $(".form-row:last").clone();
+	if ($(".form-row").length === 0) {
+	    newRow = firstRow;
+	}
+	  var splitFor = newRow.find('label').attr('for').split('-');
+	  splitFor[1] = String(formIdx);
+	  newFor = splitFor.join('-');
+	  newRow.find('label').attr('for', newFor);
+	  newRow.find('input, text').attr('id', newFor);
+	  splitName = newRow.find('input, text').attr('name').split('-');
+	  splitName[1] = String(formIdx);
+	  newName = splitName.join('-');
+	  newRow.find('input, text').attr('name', newName);
+	  newRow.find('input, text').val('');
+	  /* var formHtml = `
+	   *   <div class="form-row">
+	   *     <label for="id_form-${formIdx}-name">Name:</label>
+	   *     <input type="text" name="form-${formIdx}-name" id="id_form-${formIdx}-name">
+	   *     <button type="button" class="delete-form-row">Delete</button>
+	   *   </div>`; */
+        newRow.appendTo("#formset-container");
         
-        // Update the total form count in the management form
         var totalForms = $("#id_form-TOTAL_FORMS");
         totalForms.val(parseInt(totalForms.val()) + 1);
         
         formIdx++;
       });
 
-      // Event delegation to handle dynamic deletion
       $(document).on("click", ".delete-form-row", function() {
         $(this).closest('.form-row').remove();
         var totalForms = $("#id_form-TOTAL_FORMS");
@@ -68,6 +98,7 @@
 	  // I think decrementing should also be here even though
 	  // I initially forgot to add it
 	formIdx--;
+	  updateFormRows();
       });
     });
   </script>
