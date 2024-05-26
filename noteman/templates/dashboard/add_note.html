@@ -50,6 +50,50 @@
     </div>
     <script>
         $(document).ready(function() {
+
+	    function updateFieldsIndex() {
+		$(document).find('.form-row').each(function(index) {
+		    $(this).find('input, select').each(function() {
+			oldName = $(this).attr('name');
+			splitName = oldName.split('-');
+			splitName[1] = String(index);
+			newName = splitName.join('-');
+			/* console.log(newName); */
+			$(this).attr('name', newName);
+
+			oldId = $(this).attr('id');
+			splitId = oldId.split('-');
+			splitId[1] = String(index); 
+			newId = splitId.join('-');
+			/* console.log(newId); */
+			$(this).attr('id', newId); 
+		    });
+		    $(this).find('input, textarea').each(function() {
+			oldName = $(this).attr('name');
+			splitName = oldName.split('-');
+			splitName[1] = String(index);
+			newName = splitName.join('-');
+			/* console.log(newName); */
+			$(this).attr('name', newName);
+
+			oldId = $(this).attr('id');
+			splitId = oldId.split('-');
+			splitId[1] = String(index); 
+			newId = splitId.join('-');
+			/* console.log(newId); */
+			$(this).attr('id', newId); 
+
+		    });
+		    $(this).find('label').each(function() {
+			oldFor = $(this).attr('for');
+			splitFor = oldFor.split('-');
+			splitFor[1] = String(index);
+			newFor = splitFor.join('-');
+			/* console.log(newFor); */
+			$(this).attr('for', newFor);
+		    });
+		});
+	    }
 	    var formIdx = 1;
             var notes = [
                 {% for note in notes %}
@@ -85,17 +129,6 @@
             });
 	    $('#addConnection').click(function() {
 		// probably wont use formhtml
-		var formHtml = `
-		    <div class="form-row">
-			<label for="id_note-${formIdx}-source">Source:</label>
-			    <select name="note-${formIdx}-source" id="id_note-${formIdx}-source"> </select>
-			<label for="id_note-${formIdx}-comment">Comment:</label>
-<textarea name="note-${formIdx}-comment" cols="40" rows="10" id="id_note-${formIdx}-comment"></textarea>
-			{% for note in notes %}
-			<option value="{{note.id}}">{{note.name}}</option>
-			{% endfor %}
-			</div>
-		`;
 		/* newDiv = $(".form-row").clone(); */
 		/* $("$formset-container").append(newDiv); */
                 /* applyAutocomplete(newForm.find('.autocomplete')); */
@@ -141,6 +174,7 @@
 		var totalForms = $("#id_note-TOTAL_FORMS");
 		totalForms.val(parseInt(totalForms.val()) - 1);
 		formIdx--;
+		updateFieldsIndex();
             });
         });
     </script>
