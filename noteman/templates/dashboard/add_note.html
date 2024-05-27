@@ -1,12 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add a new note</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
+    <link href="{% static 'autocomplete_light/select2.css' %}" rel="stylesheet">
+    <!-- <script src="{% static 'autocomplete_light/vendor/jquery/dist/jquery.js' %}"></script> -->
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+    <!-- staticfiles/autocomplete_light/select2.js -->
+    <script src="{% static 'autocomplete_light/autocomplete_light.js' %}"></script>
+    <script src="{% static 'admin/js/vendor/select2/select2.full.js' %}"></script>
     <style>
         .autocomplete {
             width: 300px;
@@ -39,7 +47,10 @@
                     <div class="form-row">
                         {{ form.source.label_tag }} {{ form.source }}
                         {{ form.comment.label_tag }} {{ form.comment }}
-	    <button type="button" id="deleteConnection" class="delete-connection">Delete Connection</button>
+			<button type="button" id="deleteConnection" class="delete-connection">Delete Connection</button>
+			{{ form.media }}
+			<!-- https://stackoverflow.com/questions/40574039/django-autocomplete-light-displays-empty-dropdown-in-the-form -->
+			<!-- has to have form media for some reason -->
                     </div>
                 {% endfor %}
             </div>
@@ -53,21 +64,21 @@
 
 	    function updateFieldsIndex() {
 		$(document).find('.form-row').each(function(index) {
-		    $(this).find('input, select').each(function() {
-			oldName = $(this).attr('name');
-			splitName = oldName.split('-');
-			splitName[1] = String(index);
-			newName = splitName.join('-');
-			/* console.log(newName); */
-			$(this).attr('name', newName);
+		    /* $(this).find('input, select').each(function() {
+		       oldName = $(this).attr('name');
+		       splitName = oldName.split('-');
+		       splitName[1] = String(index);
+		       newName = splitName.join('-');
+		       //console.log(newName);
+		       $(this).attr('name', newName);
 
-			oldId = $(this).attr('id');
-			splitId = oldId.split('-');
-			splitId[1] = String(index); 
-			newId = splitId.join('-');
-			/* console.log(newId); */
-			$(this).attr('id', newId); 
-		    });
+		       oldId = $(this).attr('id');
+		       splitId = oldId.split('-');
+		       splitId[1] = String(index); 
+		       newId = splitId.join('-');
+		       //console.log(newId);
+		       $(this).attr('id', newId); 
+		       }); */
 		    $(this).find('input, textarea').each(function() {
 			oldName = $(this).attr('name');
 			splitName = oldName.split('-');
@@ -102,31 +113,6 @@
             ];
 	    var firstRow = $(".form-row:last"); 
 
-            function applyAutocomplete(selector) {
-                $(selector).autocomplete({
-                    source: notes,
-                    minLength: 0,
-                    select: function(event, ui) {
-                        $(this).val(ui.item.label);
-                        $(this).next("input[type=hidden]").val(ui.item.value);
-                        return false;
-                    }
-                }).focus(function () {
-                    $(this).autocomplete("search", "");
-                });
-            }
-
-            $('.autocomplete').each(function() {
-                applyAutocomplete(this);
-            });
-
-	    // not needed, just for testing purposes
-            $("#sendButton").click(function() {
-                var selectedTexts = [];
-                $('.autocomplete').each(function() {
-                    selectedTexts.push($(this).val());
-                });
-            });
 	    $('#addConnection').click(function() {
 		// probably wont use formhtml
 		/* newDiv = $(".form-row").clone(); */
@@ -143,13 +129,13 @@
 		    newRow = firstRow;
 		}
 		/* console.log(newRow.find()) */
-		newRow.find('input, select').each(function() {
-                    var name = $(this).attr('name').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
-                    $(this).attr('name', name);
-                    var newId = $(this).attr('id').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
-                    $(this).attr('id', newId);
-                    $(this).val('');
-                });
+		/* newRow.find('input, select').each(function() {
+		 *     var name = $(this).attr('name').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
+		 *     $(this).attr('name', name);
+		 *     var newId = $(this).attr('id').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
+		 *     $(this).attr('id', newId);
+		 *     $(this).val('');
+		 * }); */
 		newRow.find('input, textarea').each(function() {
                     var name = $(this).attr('name').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
                     $(this).attr('name', name);

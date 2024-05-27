@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
+from dal import autocomplete
 
 from .forms import NoteForm, ConnectionFormSet, TagFormset
 from .models import Connection, Note, NoteTag, Tag
@@ -57,6 +58,16 @@ def all_tags(request):
         'tag_formset': tag_formset,
     }
     return HttpResponse(template.render(context, request))
+
+
+class NoteAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Note.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
+
+        return qs
 
 
 def add_note(request):

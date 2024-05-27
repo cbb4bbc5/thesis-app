@@ -1,4 +1,5 @@
 from django import forms
+from dal import autocomplete
 
 from .models import Note, Tag, Connection
 
@@ -31,18 +32,12 @@ class NoteForm(forms.ModelForm):
 
 
 class ConnectionForm(forms.ModelForm):
-    tester = True
-    if tester:
-        source = forms.ModelChoiceField(queryset=Note.objects.all())
-    else:
-        source = forms.ModelChoiceField(
-            queryset=Note.objects.all(),
-            widget=forms.TextInput(attrs={'class': 'autocomplete'}),
-            empty_label=None,
-        )
+    # source = forms.ModelChoiceField(queryset=Note.objects.all(), widget=forms.TextInput(attrs={'class': 'autocomplete'}), empty_label=None,)
+    # source = forms.ModelChoiceField(queryset=Note.objects.all(), widget=autocomplete.ModelSelect2(url='dashboard:note-autocomplete'),)
     class Meta:
         model = Connection
         fields = ['note', 'source', 'comment']
+        widgets = {'source': autocomplete.ModelSelect2(url='dashboard:note-autocomplete'),}
 
 
 ConnectionFormSet = forms.inlineformset_factory(

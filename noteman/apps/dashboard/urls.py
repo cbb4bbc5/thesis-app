@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import views
 
@@ -12,4 +14,9 @@ urlpatterns = [
     path('notes/<int:note_id>/', views.note_detail, name='note_detail'),
     path('tags/', views.all_tags, name='all_tags'),
     path('notes/add/', views.add_note, name='add_note'),
+    path('note-autocomplete/', views.NoteAutocomplete.as_view(), name='note-autocomplete'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
