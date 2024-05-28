@@ -15,6 +15,7 @@ class NoteSerializer(serializers.ModelSerializer):
             'type',
             'description',
             'tags',
+            'references',
         ]
 
 
