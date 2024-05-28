@@ -60,109 +60,46 @@
         </form>
     </div>
     <script>
-        $(document).ready(function() {
-
-	    function updateFieldsIndex() {
-		$(document).find('.form-row').each(function(index) {
-		    /* $(this).find('input, select').each(function() {
-		       oldName = $(this).attr('name');
-		       splitName = oldName.split('-');
-		       splitName[1] = String(index);
-		       newName = splitName.join('-');
-		       //console.log(newName);
-		       $(this).attr('name', newName);
-
-		       oldId = $(this).attr('id');
-		       splitId = oldId.split('-');
-		       splitId[1] = String(index); 
-		       newId = splitId.join('-');
-		       //console.log(newId);
-		       $(this).attr('id', newId); 
-		       }); */
-		    $(this).find('input, textarea').each(function() {
-			oldName = $(this).attr('name');
-			splitName = oldName.split('-');
-			splitName[1] = String(index);
-			newName = splitName.join('-');
-			/* console.log(newName); */
-			$(this).attr('name', newName);
-
-			oldId = $(this).attr('id');
-			splitId = oldId.split('-');
-			splitId[1] = String(index); 
-			newId = splitId.join('-');
-			/* console.log(newId); */
-			$(this).attr('id', newId); 
-
-		    });
-		    $(this).find('label').each(function() {
-			oldFor = $(this).attr('for');
-			splitFor = oldFor.split('-');
-			splitFor[1] = String(index);
-			newFor = splitFor.join('-');
-			/* console.log(newFor); */
-			$(this).attr('for', newFor);
-		    });
-		});
-	    }
-	    var formIdx = 1;
-            var notes = [
-                {% for note in notes %}
-                    { label: "{{ note.name }}", value: "{{ note.id }}" },
-                {% endfor %}
-            ];
-	    var firstRow = $(".form-row:last"); 
-
-	    $('#addConnection').click(function() {
-		// probably wont use formhtml
-		/* newDiv = $(".form-row").clone(); */
-		/* $("$formset-container").append(newDiv); */
-                /* applyAutocomplete(newForm.find('.autocomplete')); */
-		newRow = $(".form-row:last").clone();
-		/* console.log(firstRow); */
-		/* console.log($('.form-row').length); */
-		if ($('.form-row').length === 0) {
-		    // if a user deleted all forms for connections for some reason
-		    // but in the end decided to create a connection nonetheless
-		    // that it is why I store a first row at the beginning of the
-		    // function
-		    newRow = firstRow;
-		}
-		/* console.log(newRow.find()) */
-		/* newRow.find('input, select').each(function() {
-		 *     var name = $(this).attr('name').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
-		 *     $(this).attr('name', name);
-		 *     var newId = $(this).attr('id').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
-		 *     $(this).attr('id', newId);
-		 *     $(this).val('');
-		 * }); */
-		newRow.find('input, textarea').each(function() {
-                    var name = $(this).attr('name').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
-                    $(this).attr('name', name);
-                    var newId = $(this).attr('id').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
-                    $(this).attr('id', newId);
-                    $(this).val('');
+$(document).ready(function() {
+            function updateFormIndices() {
+                $('#formset-container .form-row').each(function(index) {
+                    $(this).find('input, select, textarea').each(function() {
+                        let name = $(this).attr('name').replace(/-\d+-/, '-' + index + '-');
+                        let id = $(this).attr('id').replace(/-\d+-/, '-' + index + '-');
+                        $(this).attr({'name': name, 'id': id});
+                    });
                 });
-		newRow.find('label').each(function() {
-                    var newFor = $(this).attr('for').replace('-' + (formIdx - 1) + '-', '-' + formIdx + '-');
-                    $(this).attr('for', newFor);
-                });
-		newRow.appendTo('#formset-container');
-		var totalForms = $("#id_note-TOTAL_FORMS");
+                let totalForms = $('#formset-container .form-row').length;
+                $('#id_note-TOTAL_FORMS').val(totalForms);
+            }
 
-		totalForms.val(parseInt(totalForms.val()) + 1);
-		formIdx++;
+            let formIdx = parseInt($("#id_note-TOTAL_FORMS").val());
+
+            $('#addConnection').click(function() {
+                let newForm = $('#formset-container .form-row:first').clone(false);
+                newForm.find('input, select, textarea').each(function() {
+                    let name = $(this).attr('name').replace(/-\d+-/, '-' + formIdx + '-');
+                    let id = $(this).attr('id').replace(/-\d+-/, '-' + formIdx + '-');
+                    $(this).attr({'name': name, 'id': id}).val('');
+                });
+                newForm.find('.select2-container').remove();
+                newForm.find('select').removeAttr('data-select2-id').removeClass('select2-hidden-accessible').next('.select2').remove();
+                newForm.find('select').attr('data-select2-id', formIdx).select2();
+                newForm.appendTo('#formset-container');
+                formIdx++;
+                $('#id_note-TOTAL_FORMS').val(formIdx);
+                updateFormIndices();
             });
 
-            $(document).on("click", ".delete-connection", function() {
-		console.log('about to delete connection');
+            $('#formset-container').on('click', '.delete-connection', function() {
                 $(this).closest('.form-row').remove();
-		var totalForms = $("#id_note-TOTAL_FORMS");
-		totalForms.val(parseInt(totalForms.val()) - 1);
-		formIdx--;
-		updateFieldsIndex();
+                formIdx--;
+                updateFormIndices();
             });
+
+            $('#formset-container select').select2();
         });
+
     </script>
 </body>
 </html>
