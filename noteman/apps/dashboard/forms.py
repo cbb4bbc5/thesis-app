@@ -6,11 +6,7 @@ from .models import Note, Tag, Connection
 
 class NoteForm(forms.ModelForm):
     # https://stackoverflow.com/questions/56077861/how-to-make-choicefield-not-required
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.order_by('name'),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
+    # tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.order_by('name'), widget=forms.CheckboxSelectMultiple, required=False,)
     class Meta:
         model = Note
         fields = [
@@ -18,7 +14,9 @@ class NoteForm(forms.ModelForm):
             'cr_time',
             'type',
             'description',
+            'tags',
         ]
+        widgets = {'tags': autocomplete.ModelSelect2Multiple(url='dashboard:tag-autocomplete'),}
     def save(self):
         # https://stackoverflow.com/questions/2216974/django-modelform-for-many-to-many-fields
         # creating custom save function was enough to save tag info however I do not

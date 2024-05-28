@@ -15,6 +15,7 @@ urlpatterns = [
     path('tags/', views.all_tags, name='all_tags'),
     path('notes/add/', views.add_note, name='add_note'),
     path('note-autocomplete/', views.NoteAutocomplete.as_view(), name='note-autocomplete'),
+    path('tag-autocomplete/', views.TagAutocomplete.as_view(), name='tag-autocomplete'),
 ]
 
 if settings.DEBUG:

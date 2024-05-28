@@ -70,6 +70,16 @@ class NoteAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
+class TagAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Tag.objects.order_by('name')
+
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
+
+        return qs
+
+
 def add_note(request):
     template = loader.get_template('dashboard/add_note.html')
     context = {}
