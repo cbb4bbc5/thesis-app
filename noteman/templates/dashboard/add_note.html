@@ -4,15 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add a new note</title>
-    <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-    <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
+    <title>{% if note_form.instance.pk %}Edit{% else %}Add{% endif %} Note</title>
     <link href="{% static 'autocomplete_light/select2.css' %}" rel="stylesheet">
-    <!-- <script src="{% static 'autocomplete_light/vendor/jquery/dist/jquery.js' %}"></script> -->
     <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
-
-    <!-- staticfiles/autocomplete_light/select2.js -->
     <script src="{% static 'autocomplete_light/autocomplete_light.js' %}"></script>
     <script src="{% static 'admin/js/vendor/select2/select2.full.js' %}"></script>
     <style>
@@ -21,7 +15,7 @@
             padding: 10px;
             margin: 20px;
         }
-	.connection-row {
+        .connection-row {
             margin-bottom: 10px;
         }
         #sendButton {
@@ -32,35 +26,35 @@
 </head>
 <body>
     <header class="main_header">
-        <h2 class="main_header__header">Add a new note</h2>
+        <h2 class="main_header__header">{% if note_form.instance.pk %}Edit{% else %}Add{% endif %} Note</h2>
     </header>
     <div class="form_wrapper">
         <form action="" method="POST" autocomplete="off">
             {% csrf_token %}
             {{ note_form.as_p }}
-	    {{ note_form.errors }}
+            {{ note_form.errors }}
             <h2>References</h2>
             {{ connection_formset.management_form }}
             <div id="formset-container">
                 {% for form in connection_formset %}
-		{{ form.errors }}
-                    <div class="form-row">
+                    {{ form.errors }}
+                    <div class="form-row connection-row">
+                        {{ form.id }}
                         {{ form.source.label_tag }} {{ form.source }}
                         {{ form.comment.label_tag }} {{ form.comment }}
-			<button type="button" id="deleteConnection" class="delete-connection">Delete Connection</button>
-			{{ form.media }}
-			<!-- https://stackoverflow.com/questions/40574039/django-autocomplete-light-displays-empty-dropdown-in-the-form -->
-			<!-- has to have form media for some reason -->
+                        {{ form.DELETE.as_hidden }}
+                        <button type="button" class="delete-connection">Delete Connection</button>
+                        {{ form.media }}
                     </div>
                 {% endfor %}
             </div>
             <button type="button" id="addConnection">Add Connection</button>
-	    <br>
+            <br>
             <button id="sendButton" type="submit">Send</button>
         </form>
     </div>
     <script>
-$(document).ready(function() {
+        $(document).ready(function() {
             function updateFormIndices() {
                 $('#formset-container .form-row').each(function(index) {
                     $(this).find('input, select, textarea').each(function() {
@@ -82,6 +76,7 @@ $(document).ready(function() {
                     let id = $(this).attr('id').replace(/-\d+-/, '-' + formIdx + '-');
                     $(this).attr({'name': name, 'id': id}).val('');
                 });
+                newForm.find('input:hidden[name$="-id"]').remove();
                 newForm.find('.select2-container').remove();
                 newForm.find('select').removeAttr('data-select2-id').removeClass('select2-hidden-accessible').next('.select2').remove();
                 newForm.find('select').attr('data-select2-id', formIdx).select2();
@@ -92,14 +87,18 @@ $(document).ready(function() {
             });
 
             $('#formset-container').on('click', '.delete-connection', function() {
-                $(this).closest('.form-row').remove();
-                formIdx--;
+                let row = $(this).closest('.form-row');
+                if (row.find('input:hidden[name$="-id"]').length) {
+                    row.hide();
+                    row.find('input:hidden[name$="-DELETE"]').val('on');
+                } else {
+                    row.remove();
+                }
                 updateFormIndices();
             });
 
             $('#formset-container select').select2();
         });
-
     </script>
 </body>
 </html>

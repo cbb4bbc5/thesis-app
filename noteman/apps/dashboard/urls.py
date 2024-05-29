@@ -14,6 +14,7 @@ urlpatterns = [
     path('notes/<int:note_id>/', views.note_detail, name='note_detail'),
     path('tags/', views.all_tags, name='all_tags'),
     path('notes/add/', views.add_note, name='add_note'),
+    path('notes/<int:note_id>/edit/', views.add_note, name='edit_note'),
     path('note-autocomplete/', views.NoteAutocomplete.as_view(), name='note-autocomplete'),
     path('tag-autocomplete/', views.TagAutocomplete.as_view(), name='tag-autocomplete'),
 ]
