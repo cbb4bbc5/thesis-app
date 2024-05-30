@@ -119,7 +119,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-gb'
 
 # TODO: consider setting dynamically this to take into account differences in timezone
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
+# https://docs.djangoproject.com/en/5.0/topics/i18n/timezones/#default-current-time-zone
 
 USE_I18N = True
 
