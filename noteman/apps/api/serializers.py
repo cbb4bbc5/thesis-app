@@ -17,6 +17,9 @@ class NoteSerializer(serializers.ModelSerializer):
             'tags',
             'references',
         ]
+        read_only_fields = [
+            'id',
+        ]
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -25,6 +28,9 @@ class TagSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
+        ]
+        read_only_fields = [
+            'id',
         ]
 
 
@@ -35,4 +41,20 @@ class NoteTagSerializer(serializers.ModelSerializer):
             'id',
             'note',
             'tag',
+        ]
+        read_only_fields = [
+            'id',
+        ]
+
+
+class ConnectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Connection
+        fields = [
+            'id',
+            'note',
+            'source',
+        ]
+        read_only_fields = [
+            'id',
         ]

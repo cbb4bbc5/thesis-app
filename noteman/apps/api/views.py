@@ -1,7 +1,7 @@
-from apps.dashboard.models import Note, NoteTag, Tag
+from apps.dashboard.models import Note, NoteTag, Tag, Connection
 from rest_framework import viewsets
 
-from .serializers import NoteSerializer, NoteTagSerializer, TagSerializer
+from .serializers import NoteSerializer, NoteTagSerializer, TagSerializer, ConnectionSerializer
 
 # https://www.django-rest-framework.org/api-guide/generic-views/#generic-views
 # TODO: remove branding? https://stackoverflow.com/questions/51393960/django-rest-browsable-api-template-change
@@ -19,3 +19,8 @@ class TagViewSet(viewsets.ModelViewSet):
 class NoteTagViewSet(viewsets.ModelViewSet):
     queryset = NoteTag.objects.all()
     serializer_class = NoteTagSerializer
+
+
+class ConnectionViewSet(viewsets.ModelViewSet):
+    queryset = Connection.objects.all()
+    serializer_class = ConnectionSerializer
