@@ -8,9 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+# install dependencies for development purposes
 RUN pip install 'python-lsp-server[all]'
-RUN pip install django-autocomplete-light
-RUN pip install pylint-django
 
 #RUN pip install Django
 #RUN pip install build
