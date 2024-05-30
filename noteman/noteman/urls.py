@@ -14,9 +14,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
 from apps.api.urls import router as api_router
+from django.contrib import admin
+from django.urls import include, path
 
 # include and providing the module are both valid ways to configure
 # urls, include seems better for more than 1 route, I will see in
@@ -27,4 +27,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(api_router.urls)),
+    path('api/', include('apps.api.urls')),
 ]
