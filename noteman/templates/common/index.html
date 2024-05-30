@@ -8,6 +8,14 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto"
     />
+    <style>
+     h2 {
+	 color: white;
+     }
+     body {
+	 background-color: #22233b;
+     }
+    </style>
     <title>Noteman</title>
     </head>
   <body>
@@ -20,7 +28,7 @@
 	<a class="action__link" href="{%url 'dashboard:all_notes' %}">Go to notes</a>
     </div>
     <div class="action">
-	<h2 class="action__headerr">Manage your tags</h2>
+	<h2 class="action__header">Manage your tags</h2>
 	<a class="action__link" href="{%url 'dashboard:all_tags' %}">Go to tags</a>
     </div>
     </div>

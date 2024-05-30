@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All notes</title>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" /> -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
+     h2 {
+	 color: white;
+	 display: flex;
+	 justify-content: center;
+     }
+     body {
+	 background-color: #373760;
+	 /* display: flex; */
+	 /* justify-content: center; */
+     }
+     .note__link {
+	 text-decoration: none;
+	 color: white;
+	 display: flex;
+	 justify-content: center;
+	 font-size: 1.5rem;
+     }
         .selected-items {
             margin-top: 20px;
         }
@@ -24,11 +42,36 @@
         }
         .tag {
             display: inline-block;
-            background-color: #f1f1f1;
-            border: 1px solid #ddd;
+            background-color: #6b7c9d;
+            border: 3px solid #cc919a;
+	    border-radius: 20px;
+	    color: white;
             padding: 5px;
             margin: 2px;
+	    min-width: 50px;
+	    text-align: center;
         }
+	.select2-container .select2-search--inline .select2-search__field {
+	    display: flex;
+	    justify-content: center;
+	    /* box-sizing:border-box;
+	       border:none;
+	       font-size:100%;
+	       margin-top:5px;
+	       margin-left:5px;
+	       padding:0;
+	       max-width:100%;
+	       resize:none;
+	       height:18px;
+	       vertical-align:bottom;
+	       font-family:sans-serif;
+	       overflow:hidden;
+	       word-break:keep-all */
+	}
+	.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+	    background-color:#CC919A;
+	    color:white
+	}
     </style>
 </head>
 <body>
@@ -45,7 +88,7 @@
 	<div id="notes">
 	    {% for note in notes %}
 		<div class="note" data-tags="{% for tag in note.tags.all %}{{ tag.name }},{% endfor %}">
-	<a href="{% url 'dashboard:note_detail' note.id %}"> {{ note.name }}</a>
+	<a class="note__link" href="{% url 'dashboard:note_detail' note.id %}"> {{ note.name }}</a>
 		    <div class="tags">
 			{% if note.tags.all %}
 			    {% for tag in note.tags.all|dictsort:"name" %}
@@ -62,8 +105,10 @@
     {% endif %}
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
      /* https://github.com/select2/select2/issues/3106 */
      /* sorting is not worth it */
