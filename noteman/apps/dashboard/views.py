@@ -62,7 +62,7 @@ def all_tags(request):
 
 class NoteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        qs = Note.objects.all()
+        qs = Note.objects.order_by('-cr_time')
 
         if self.q:
             qs = qs.filter(name__icontains=self.q)
