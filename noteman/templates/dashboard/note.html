@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,10 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> {{ note.name }} </title>
+    <link href="{% static 'note/note.css' %}" rel="stylesheet">
     </head>
   <body>
     <div class="note">
-      <h2>Note</h2>
+      <h2>Note metadata</h2>
+      <a href="{% url 'dashboard:edit_note' note.id %}">
+      <button>
+	  Edit
+      </button>
+      </a>
     <table>
       <tr>
 	<th> Name </th>
@@ -26,7 +33,7 @@
       {% if note.description %}
       <tr>
 	<th> Description </th>
-	<td> {{ note.description }} </td>
+	<td class="whitespace"> {{ note.description }} </td>
       </tr>
       {% endif %}
     </table>
@@ -35,7 +42,7 @@
       {% if tags %}
       {% for tag in tags|dictsort:"name" %}
 	<!-- TODO: make these tags into urls? and style them with CSS -->
-				<span class="tag">{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
+	<span class="tag">{{ tag.name }}</span>{% if not forloop.last %} {% endif %}
       {% endfor %}
       {% else %}
       <p> This note does not have any tags </p>
@@ -44,12 +51,15 @@
 <div class="sources">
   <h2>References</h2>
   {% if connections %}
+  <table>
   {% for connection in connections %}
-  <div>
-    <a href="{% url 'dashboard:note_detail' connection.source.id %}"> {{ connection.source.name }}</a>
-    {{ connection.comment }}
-  </div>
+      <tr>
+	  <th>
+	      <a class="link" href="{% url 'dashboard:note_detail' connection.source.id %}"> {{ connection.source.name }}</a> </th>
+	  <td class="whitespace"> {{ connection.comment }} </td>
+      </tr>
   {% endfor %}
+  </table>
   {% else %}
   <p> This note does not reference any other notes </p>
   {% endif %}
