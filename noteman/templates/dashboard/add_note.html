@@ -9,20 +9,8 @@
     <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
     <script src="{% static 'autocomplete_light/autocomplete_light.js' %}"></script>
     <script src="{% static 'admin/js/vendor/select2/select2.full.js' %}"></script>
-    <style>
-        .autocomplete {
-            width: 300px;
-            padding: 10px;
-            margin: 20px;
-        }
-        .connection-row {
-            margin-bottom: 10px;
-        }
-        #sendButton {
-            padding: 10px 20px;
-            margin-left: 20px;
-        }
-    </style>
+    <link href="{% static 'add_note/add_note.css' %}" rel="stylesheet">
+    <script src="{% static 'add_note/add_note.js' %}"></script>
 </head>
 <body>
     <header class="main_header">
@@ -41,9 +29,9 @@
                     <div class="form-row connection-row">
                         {{ form.id }}
                         {{ form.source.label_tag }} {{ form.source }}
+                        <button type="button" class="delete-connection">Delete Connection</button>
                         {{ form.comment.label_tag }} {{ form.comment }}
                         {{ form.DELETE.as_hidden }}
-                        <button type="button" class="delete-connection">Delete Connection</button>
                         {{ form.media }}
                     </div>
                 {% endfor %}
@@ -53,52 +41,5 @@
             <button id="sendButton" type="submit">Send</button>
         </form>
     </div>
-    <script>
-        $(document).ready(function() {
-            function updateFormIndices() {
-                $('#formset-container .form-row').each(function(index) {
-                    $(this).find('input, select, textarea').each(function() {
-                        let name = $(this).attr('name').replace(/-\d+-/, '-' + index + '-');
-                        let id = $(this).attr('id').replace(/-\d+-/, '-' + index + '-');
-                        $(this).attr({'name': name, 'id': id});
-                    });
-                });
-                let totalForms = $('#formset-container .form-row').length;
-                $('#id_note-TOTAL_FORMS').val(totalForms);
-            }
-
-            let formIdx = parseInt($("#id_note-TOTAL_FORMS").val());
-
-            $('#addConnection').click(function() {
-                let newForm = $('#formset-container .form-row:first').clone(false);
-                newForm.find('input, select, textarea').each(function() {
-                    let name = $(this).attr('name').replace(/-\d+-/, '-' + formIdx + '-');
-                    let id = $(this).attr('id').replace(/-\d+-/, '-' + formIdx + '-');
-                    $(this).attr({'name': name, 'id': id}).val('');
-                });
-                newForm.find('input:hidden[name$="-id"]').remove();
-                newForm.find('.select2-container').remove();
-                newForm.find('select').removeAttr('data-select2-id').removeClass('select2-hidden-accessible').next('.select2').remove();
-                newForm.find('select').attr('data-select2-id', formIdx).select2();
-                newForm.appendTo('#formset-container');
-                formIdx++;
-                $('#id_note-TOTAL_FORMS').val(formIdx);
-                updateFormIndices();
-            });
-
-            $('#formset-container').on('click', '.delete-connection', function() {
-                let row = $(this).closest('.form-row');
-                if (row.find('input:hidden[name$="-id"]').length) {
-                    row.hide();
-                    row.find('input:hidden[name$="-DELETE"]').val('on');
-                } else {
-                    row.remove();
-                }
-                updateFormIndices();
-            });
-
-            $('#formset-container select').select2();
-        });
-    </script>
 </body>
 </html>
