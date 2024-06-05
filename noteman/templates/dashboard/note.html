@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> {{ note.name }} </title>
     <link href="{% static 'note/note.css' %}" rel="stylesheet">
+    <title> {{ note.name }} </title>
     </head>
   <body>
     <div class="note">
@@ -19,7 +19,6 @@
     <table>
       <tr>
 	<th> Name </th>
-	<!-- TODO: make note.name into a URL to the actual local file?  -->
 	<td> {{ note.name }} </td>
       </tr>
       <tr>
@@ -41,7 +40,6 @@
       <h2>Tags</h2>
       {% if tags %}
       {% for tag in tags|dictsort:"name" %}
-	<!-- TODO: make these tags into urls? and style them with CSS -->
 	<span class="tag">{{ tag.name }}</span>{% if not forloop.last %} {% endif %}
       {% endfor %}
       {% else %}
