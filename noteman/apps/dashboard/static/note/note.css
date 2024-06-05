@@ -21,6 +21,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
+    overflow-x: auto;
 }
 
 h2 {
@@ -34,6 +35,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    table-layout: fixed;
 }
 
 table, th, td {
@@ -43,6 +45,10 @@ table, th, td {
 th, td {
     padding: 12px;
     text-align: left;
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 button {
