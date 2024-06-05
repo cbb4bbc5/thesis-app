@@ -10,7 +10,7 @@ body {
 }
 
 .main_header {
-    background-color: #4CAF50;
+    background-color: #0366d6;
     color: white;
     width: 100%;
     text-align: center;
@@ -67,7 +67,7 @@ textarea {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #0366d6;
     color: white;
     border: none;
     padding: 0.8em 1.5em;
@@ -82,7 +82,7 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #0056b3;
 }
 
 button.delete-connection {
