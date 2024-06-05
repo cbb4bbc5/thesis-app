@@ -1,21 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto"
-    />
-    <style>
-     h2 {
-	 color: white;
-     }
-     body {
-	 background-color: #22233b;
-     }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
+    <link href="{% static 'index/index.css' %}" rel="stylesheet">
     <title>Noteman</title>
     </head>
   <body>
@@ -25,11 +16,19 @@
     <div class="content">
     <div class="action">
 	<h2 class="action__header">Manage your notes</h2>
-	<a class="action__link" href="{%url 'dashboard:all_notes' %}">Go to notes</a>
+	<a class="action__link" href="{%url 'dashboard:all_notes' %}">
+	    <button>
+		Go to notes
+	    </button>
+	</a>
     </div>
     <div class="action">
 	<h2 class="action__header">Manage your tags</h2>
-	<a class="action__link" href="{%url 'dashboard:all_tags' %}">Go to tags</a>
+	<a class="action__link" href="{%url 'dashboard:all_tags' %}">
+	    <button>
+		Go to tags
+	    </button>
+	</a>
     </div>
     </div>
     </body>
