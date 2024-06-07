@@ -20,6 +20,7 @@ def all_notes(request):
     context = {
         'notes': notes,
         'tags': tags,
+        'navbar': 'common/navbar.html',
     }
     return HttpResponse(template.render(context, request))
 
@@ -40,6 +41,7 @@ def note_detail(request, note_id):
         'note': note,
         'tags': tags,
         'connections': connections,
+        'navbar': 'common/navbar.html',
     }
     return HttpResponse(template.render(context, request))
 
@@ -56,6 +58,7 @@ def all_tags(request):
     context = {
         'tags': tags,
         'tag_formset': tag_formset,
+        'navbar': 'common/navbar.html',
     }
     return HttpResponse(template.render(context, request))
 
@@ -116,5 +119,6 @@ def add_note(request, note_id=None):
         'note_form': note_form,
         'connection_formset': connection_formset,
         'notes': notes,
+        'navbar': 'common/navbar.html',
     }
     return HttpResponse(template.render(context, request))

@@ -7,10 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>All tags list</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto" />
   <script src="{% static 'all_tags/all_tags.js' %}"></script>
-    <link href="{% static 'all_tags/all_tags.css' %}" rel="stylesheet">
+  <link href="{% static 'all_tags/all_tags.css' %}" rel="stylesheet">
+  <link href="{% static 'navbar/navbar.css' %}" rel="stylesheet">
 </head>
 <body>
+  {% include navbar %}
   <h2>Add new tags</h2>
   <form id="tag-form" class="tag-form" method="post">
     {% csrf_token %}
