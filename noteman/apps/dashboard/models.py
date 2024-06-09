@@ -17,15 +17,25 @@ class Tag(models.Model):
 
 
 class Note(models.Model):
-    # TODO: note name probably should be unique since it is supposed to be file path in the end
+    TEXT = 1
+    PDF = 2
+    VIDEO = 3
+    AUDIO = 4
+    URL = 5
+    TYPE_CHOICES = {
+        TEXT: "Local text file",
+        PDF: "Local PDF (or similar) file",
+        VIDEO: "Local video file",
+        AUDIO: "Local audio file",
+        URL: "External link",
+    }
     name = models.CharField(max_length=200)
-    # db_default or default
-    # https://stackoverflow.com/questions/77665050/what-does-the-new-field-db-default-of-django-5-imply-should-we-use-it-by-def
     cr_time = models.DateTimeField(default=django.utils.timezone.now,
                                    verbose_name='creation time')
-    # TODO: use choices for type_id, like here
-    # https://stackoverflow.com/questions/48040008/django-restrict-data-that-can-be-given-to-model-field
-    type = models.IntegerField()
+    type = models.IntegerField(
+        choices=TYPE_CHOICES,
+        default=TEXT,
+    )
     description = models.TextField(blank=True)
     tags = models.ManyToManyField(Tag, through="NoteTag")
     references = models.ManyToManyField(

@@ -4,7 +4,6 @@ from rest_framework import routers
 
 from .views import ConnectionViewSet, NoteTagViewSet, NoteViewSet, TagViewSet
 
-# for now router is unused
 router = routers.DefaultRouter()
 
 
@@ -19,5 +18,5 @@ router.register(r'connections', ConnectionViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('docs/', SpectacularSwaggerView.as_view(), name='swagger-ui'),
 ]

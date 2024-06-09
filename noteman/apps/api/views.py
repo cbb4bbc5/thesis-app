@@ -3,8 +3,6 @@ from rest_framework import viewsets
 
 from .serializers import NoteSerializer, NoteTagSerializer, TagSerializer, ConnectionSerializer
 
-# https://www.django-rest-framework.org/api-guide/generic-views/#generic-views
-# TODO: remove branding? https://stackoverflow.com/questions/51393960/django-rest-browsable-api-template-change
 
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.order_by('-cr_time')
@@ -13,6 +11,7 @@ class NoteViewSet(viewsets.ModelViewSet):
         'id': ['exact'],
         'name': ['exact', 'icontains', 'contains'],
         'cr_time': ['gte', 'lte'],
+        'type': ['exact'],
     }
     ordering_fields = ['cr_time']
 
