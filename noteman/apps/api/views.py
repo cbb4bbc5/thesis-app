@@ -2,24 +2,18 @@ from apps.dashboard.models import Note, NoteTag, Tag, Connection
 from rest_framework import viewsets
 
 from .serializers import NoteSerializer, NoteTagSerializer, TagSerializer, ConnectionSerializer
-
+from .filters import NoteFilter
 
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.order_by('-cr_time')
     serializer_class = NoteSerializer
-    filterset_fields = {
-        'id': ['exact'],
-        'name': ['exact', 'icontains', 'contains'],
-        'cr_time': ['gte', 'lte'],
-        'type': ['exact'],
-    }
+    filterset_class = NoteFilter
     ordering_fields = ['cr_time']
 
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    # filterset_fields = ['name']
     filterset_fields = {
         'name': ['exact', 'icontains', 'contains'],
     }
