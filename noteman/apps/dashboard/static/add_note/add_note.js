@@ -7,14 +7,15 @@ $(document).ready(function() {
                 $(this).attr({'name': name, 'id': id});
             });
         });
-        let totalForms = $('#formset-container .form-row').length;
+        let totalForms = $('.form-row').length;
         $('#id_note-TOTAL_FORMS').val(totalForms);
     }
 
     let formIdx = parseInt($("#id_note-TOTAL_FORMS").val());
+    let firstRow = $('.form-row:first').clone();
 
     $('#addConnection').click(function() {
-        let newForm = $('#formset-container .form-row:first').clone(false);
+        let newForm = firstRow.clone();
         newForm.find('input, select, textarea').each(function() {
             let name = $(this).attr('name').replace(/-\d+-/, '-' + formIdx + '-');
             let id = $(this).attr('id').replace(/-\d+-/, '-' + formIdx + '-');
