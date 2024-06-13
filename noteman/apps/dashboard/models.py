@@ -79,8 +79,5 @@ class Connection(models.Model):
              models.CheckConstraint(
                  check=~models.Q(note=models.F('source')),
                  name='not_equal'
-             ),
-             models.UniqueConstraint(
-                 fields=['note', 'source'], name='unique_sources'
              )
          ]
