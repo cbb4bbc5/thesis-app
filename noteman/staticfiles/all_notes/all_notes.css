@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #444;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+#notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.note {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
+    transition: transform 0.2s;
+}
+
+.note:hover {
+    transform: translateY(-5px);
+}
+
+.note__link {
+    display: block;
+    font-weight: bold;
+    color: #007BFF;
+    text-decoration: none;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note__link:hover {
+    text-decoration: underline;
+}
+
+.tags {
+    margin-top: 10px;
+}
+
+span.tag {
+    display: inline-block;
+    background-color: #e1ecf4;
+    color: #0366d6;
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-size: 14px;
+    margin: 0 5px 5px 0;
+}
+
+.tag:first-child {
+    margin-left: 0;
+}
+
+.strong {
+    font-weight: bold;
+    color: #999;
+}
+
+@media (max-width: 1200px) {
+    .note {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .note {
+        width: 100%;
+    }
+}
