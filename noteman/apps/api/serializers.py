@@ -54,6 +54,7 @@ class ConnectionSerializer(serializers.ModelSerializer):
             'id',
             'note',
             'source',
+            'comment',
         ]
         read_only_fields = [
             'id',
