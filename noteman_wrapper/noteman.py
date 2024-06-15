@@ -10,8 +10,9 @@ def main():
     try:
         args = noteman_parser.parser.parse_args(sys.argv[1:])
         args.func(args)
-    except AttributeError as ae:
+    except AttributeError:
         print('Empty argument list')
+
 
 if __name__ == '__main__':
     main()

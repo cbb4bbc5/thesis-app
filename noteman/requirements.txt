@@ -4,3 +4,4 @@ djangorestframework
 django-autocomplete-light
 drf-spectacular
 django-filter
+whitenoise

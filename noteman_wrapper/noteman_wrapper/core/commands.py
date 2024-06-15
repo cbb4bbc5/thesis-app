@@ -7,7 +7,6 @@ class NotemanActions:
             'notetag': 'notetags',
         }
 
-
     def get_action(self, args):
         params = None
         if args.name:
@@ -31,7 +30,6 @@ class NotemanActions:
                 for k, v in response.json().items():
                     print(k, v)
 
-
     def mock_add_tag(self, args):
         passed = {arg for arg in vars(args) if getattr(args, arg) is not None}
         allowed = set(['resource', 'name', 'func'])
@@ -53,9 +51,8 @@ class NotemanActions:
         else:
             print(f'adding tag with name {args.name}')
 
-
     def mock_add_notetag(self, args):
-        if not(args.note or args.tag):
+        if not (args.note or args.tag):
             print('those are required')
             return
 
@@ -70,7 +67,7 @@ class NotemanActions:
 
         try:
             response_tag = self.wrapper.get_resource(
-                'tags', params={'name':args.tag}
+                'tags', params={'name': args.tag}
             )
             response_tag.raise_for_status()
         except Exception as exc:
@@ -93,7 +90,6 @@ class NotemanActions:
                 response.raise_for_status()
             except Exception as exc:
                 print(exc)
-
 
     def mock_add_connection(self, args):
         try:
@@ -125,7 +121,6 @@ class NotemanActions:
                 )
             except Exception as exc:
                 print(exc)
-
 
     def mock_add_note(self, args):
         passed = [arg for arg in vars(args) if getattr(args, arg) is not None]
@@ -165,7 +160,6 @@ class NotemanActions:
                     new_args.destination = args.name
                     self.mock_add_connection(args)
 
-
     def mock_delete_connection(self, args):
         try:
             response_note = self.wrapper.get_resource(
@@ -185,7 +179,7 @@ class NotemanActions:
             print('Empty response')
         try:
             response_connection = self.wrapper.get_resource(
-                'connections', params={'note':note_id, 'source':source_id})
+                'connections', params={'note': note_id, 'source': source_id})
             response_connection.raise_for_status()
         except Exception as exc:
             print(exc)
@@ -202,7 +196,6 @@ class NotemanActions:
                 response.raise_for_status()
             except Exception as exc:
                 print(exc)
-
 
     def mock_delete_by_name(self, args):
         resource = args.resource
@@ -229,7 +222,6 @@ class NotemanActions:
             except Exception as exc:
                 print(exc)
 
-
     def mock_delete_notetag(self, args):
         try:
             response_note = self.wrapper.get_resource(
@@ -237,7 +229,7 @@ class NotemanActions:
             )
             response_note.raise_for_status()
             response_tag = self.wrapper.get_resource(
-                'tags', params={'name':args.tag}
+                'tags', params={'name': args.tag}
             )
             response_tag.raise_for_status()
         except Exception as exc:
@@ -268,7 +260,6 @@ class NotemanActions:
             except Exception as exc:
                 print(exc)
 
-    
     def mock_edit_connection(self, args):
         try:
             response_note = self.wrapper.get_resource(
@@ -288,7 +279,7 @@ class NotemanActions:
             print('Empty response')
         try:
             response_connection = self.wrapper.get_resource(
-                'connections', params={'note':note_id, 'source':source_id})
+                'connections', params={'note': note_id, 'source': source_id})
             response_connection.raise_for_status()
         except Exception as exc:
             print(exc)
@@ -309,7 +300,6 @@ class NotemanActions:
                 )
             except Exception as exc:
                 print(exc)
-
 
     def mock_edit_by_name(self, args):
         resource = args.resource
@@ -336,7 +326,7 @@ class NotemanActions:
                 response_json = response.json()[0]
                 data = {
                     'name': args.new_name if args.new_name else args.name,
-                    'cr_time': args.cr_time if  args.cr_time else response_json.get('cr_time'),
+                    'cr_time': args.cr_time if args.cr_time else response_json.get('cr_time'),
                     'type': args.type if args.type else response_json.get('type'),
                     'description': args.description if args.description else response_json.get('description')
                 }

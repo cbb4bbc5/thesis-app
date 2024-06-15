@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=ye_aazt-^19swl81&2mf9m55!siw*lem)u$!1g#%49$cn@!x7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['192.168.1.19', 'localhost']
 
@@ -54,6 +54,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,7 +72,7 @@ TEMPLATES = [
             # had to add this line unlinke in stakler as I guess
             # this project has a more complex structure
             os.path.join(BASE_DIR, 'templates'),
-         ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

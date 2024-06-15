@@ -1,6 +1,6 @@
 import django_filters
 
-from apps.dashboard.models import Note, Tag
+from apps.dashboard.models import Note
 
 
 class NoteFilter(django_filters.FilterSet):

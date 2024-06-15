@@ -5,13 +5,12 @@ from .models import Note, Tag, Connection
 
 
 class NoteForm(forms.ModelForm):
-    # https://stackoverflow.com/questions/56077861/how-to-make-choicefield-not-required
-    # tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.order_by('name'), widget=forms.CheckboxSelectMultiple, required=False,)
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.order_by('name'),
         widget=autocomplete.ModelSelect2Multiple(url='dashboard:tag-autocomplete'),
-        required=False,  # This makes the tags field not required
+        required=False,
     )
+
     class Meta:
         model = Note
         fields = [
@@ -21,12 +20,8 @@ class NoteForm(forms.ModelForm):
             'description',
             'tags',
         ]
-        # widgets = {'tags': autocomplete.ModelSelect2Multiple(url='dashboard:tag-autocomplete'),}
+
     def save(self):
-        # https://stackoverflow.com/questions/2216974/django-modelform-for-many-to-many-fields
-        # creating custom save function was enough to save tag info however I do not
-        # fully understand how it works, as I think manytomany should have been saved
-        # without having to modify save function
         instance = forms.ModelForm.save(self)
         instance.tags.clear()
         print(*self.cleaned_data['tags'])
@@ -35,12 +30,10 @@ class NoteForm(forms.ModelForm):
 
 
 class ConnectionForm(forms.ModelForm):
-    # source = forms.ModelChoiceField(queryset=Note.objects.all(), widget=forms.TextInput(attrs={'class': 'autocomplete'}), empty_label=None,)
-    # source = forms.ModelChoiceField(queryset=Note.objects.all(), widget=autocomplete.ModelSelect2(url='dashboard:note-autocomplete'),)
     class Meta:
         model = Connection
         fields = ['note', 'source', 'comment']
-        widgets = {'source': autocomplete.ModelSelect2(url='dashboard:note-autocomplete'),}
+        widgets = {'source': autocomplete.ModelSelect2(url='dashboard:note-autocomplete'), }
 
 
 ConnectionFormSet = forms.inlineformset_factory(

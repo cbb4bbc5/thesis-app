@@ -3,6 +3,7 @@ import argparse
 from noteman_wrapper.core.commands import NotemanActions
 from noteman_wrapper.core.wrapper import NotemanWrapper
 
+
 class NotemanParser:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description='Noteman parser')
@@ -10,13 +11,11 @@ class NotemanParser:
         self.subparsers = self.parser.add_subparsers()
         self._initialize_parsers()
 
-
     def _initialize_parsers(self):
         self._initialize_list_parser()
         self._initialize_create_parser()
         self._initialize_delete_parser()
         self._initialize_edit_parser()
-
 
     def _initialize_list_parser(self):
         self.list_parser = self.subparsers.add_parser('list')
@@ -26,7 +25,6 @@ class NotemanParser:
         self.list_group.add_argument('--name', dest='name')
         self.list_group.add_argument('--all', action='store_true')
         self.list_group.set_defaults(func=self.actions.get_action)
-
 
     def _initialize_create_parser(self):
         self.create_parser = self.subparsers.add_parser('add')
@@ -54,7 +52,6 @@ class NotemanParser:
         self.create_notetag_parser.add_argument('--note', dest='note')
         self.create_notetag_parser.add_argument('--tag', dest='tag')
 
-
     def _initialize_delete_parser(self):
         self.delete_parser = self.subparsers.add_parser('remove')
         self.delete_parser.add_argument(
@@ -73,7 +70,6 @@ class NotemanParser:
         # also used for deleting notes
         self.delete_tag_parser = self.delete_parser.add_argument_group('tag')
         self.delete_tag_parser.add_argument('--name', dest='name')
-
 
     def _initialize_edit_parser(self):
         self.edit_parser = self.subparsers.add_parser('edit')
@@ -98,24 +94,22 @@ class NotemanParser:
         self.edit_note_parser.add_argument('--type', dest='type')
         self.edit_note_parser.add_argument('--description', dest='description')
 
-
     def _handle_add_command(self, args):
-            if args.resource in ['note', 'tag']:
-                if args.source or args.destination:
-                    self.parser.error("--from and --to are not allowed for 'note' or 'tag'")
-                    return
-                if args.resource == 'tag':
-                    self.actions.mock_add_tag(args)
-                elif args.resource == 'note':
-                    self.actions.mock_add_note(args)
-            elif args.resource == 'connection':
-                if args.source and args.destination and not args.name:
-                    self.actions.mock_add_connection(args)
-                else:
-                    self.parser.error("'connection' requires --from and --to options or two positional arguments")
-            elif args.resource == 'notetag':
-                self.actions.mock_add_notetag(args)
-
+        if args.resource in ['note', 'tag']:
+            if args.source or args.destination:
+                self.parser.error("--from and --to are not allowed for 'note' or 'tag'")
+                return
+            if args.resource == 'tag':
+                self.actions.mock_add_tag(args)
+            elif args.resource == 'note':
+                self.actions.mock_add_note(args)
+        elif args.resource == 'connection':
+            if args.source and args.destination and not args.name:
+                self.actions.mock_add_connection(args)
+            else:
+                self.parser.error("'connection' requires --from and --to options or two positional arguments")
+        elif args.resource == 'notetag':
+            self.actions.mock_add_notetag(args)
 
     def _handle_delete_command(self, args):
         if args.resource == 'connection':
@@ -134,7 +128,6 @@ class NotemanParser:
             else:
                 self.parser.error('Note and tag are required')
 
-
     def _handle_edit_command(self, args):
         if args.resource == 'connection':
             if args.destination and args.source:
@@ -146,4 +139,3 @@ class NotemanParser:
                 self.actions.mock_edit_by_name(args)
             else:
                 self.parser.error('Name must be specified')
-                    

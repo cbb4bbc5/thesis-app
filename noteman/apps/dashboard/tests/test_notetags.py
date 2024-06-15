@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from apps.dashboard.models import Note, Tag, NoteTag
 
+
 class NoteTagTestCase(TestCase):
     def setUp(self):
         self.note = Note.objects.create(
@@ -31,11 +32,9 @@ class NoteTagTestCase(TestCase):
     def test_add_tag(self):
         self.assertTrue(NoteTag.objects.filter(note=self.note, tag=self.tag).exists())
 
-
     def test_add_multiple_tags(self):
         for t in self.tags:
             self.assertTrue(NoteTag.objects.filter(note=self.note, tag=t).exists)
-
 
     def test_readd_tag(self):
         with self.assertRaises(IntegrityError) as cm:

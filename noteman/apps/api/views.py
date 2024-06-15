@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from .serializers import NoteSerializer, NoteTagSerializer, TagSerializer, ConnectionSerializer
 from .filters import NoteFilter
 
+
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.order_by('-cr_time')
     serializer_class = NoteSerializer

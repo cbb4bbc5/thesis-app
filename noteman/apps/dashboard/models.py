@@ -19,12 +19,14 @@ class Tag(models.Model):
 class Note(models.Model):
     TEXT = 1
     PDF = 2
-    VIDEO = 3
-    AUDIO = 4
-    URL = 5
+    IMAGE = 3
+    VIDEO = 4
+    AUDIO = 5
+    URL = 6
     TYPE_CHOICES = {
         TEXT: "Local text file",
         PDF: "Local PDF (or similar) file",
+        IMAGE: "Local image file",
         VIDEO: "Local video file",
         AUDIO: "Local audio file",
         URL: "External link",
@@ -68,16 +70,16 @@ class NoteTag(models.Model):
 
 
 class Connection(models.Model):
-     note = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='note')
-     source = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='source')
-     comment = models.TextField(blank=True)
+    note = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='note')
+    source = models.ForeignKey(Note, on_delete=models.CASCADE, related_name='source')
+    comment = models.TextField(blank=True)
 
-     class Meta:
-         # https://stackoverflow.com/questions/63649333/how-to-add-constraint-for-2-fields-not-having-the-same-value
-         # TODO: also take into account avoiding cycles but probably not as a constraint? I need to think this through
-         constraints = [
-             models.CheckConstraint(
-                 check=~models.Q(note=models.F('source')),
-                 name='not_equal'
-             )
-         ]
+    class Meta:
+        # https://stackoverflow.com/questions/63649333/how-to-add-constraint-for-2-fields-not-having-the-same-value
+        # TODO: also take into account avoiding cycles but probably not as a constraint? I need to think this through
+        constraints = [
+            models.CheckConstraint(
+                check=~models.Q(note=models.F('source')),
+                name='not_equal'
+            )
+        ]
