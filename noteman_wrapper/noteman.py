@@ -11,7 +11,7 @@ def main():
         args = parser_helper.parser.parse_args(sys.argv[1:])
         args.func(args)
     except AttributeError:
-        print('Empty argument list')
+        print('Error processing request')
 
 
 if __name__ == '__main__':

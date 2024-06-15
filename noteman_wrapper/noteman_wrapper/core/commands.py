@@ -33,14 +33,32 @@ class NotemanActions:
                 print('-' * len(header))
 
                 for k, v in r.items():
-                    if v:
+                    if v and not k == 'references':
                         to_display = v
                         if k == 'tags':
                             tags = [self.wrapper.get_resource('tags', id=t).json()['name'] for t in v]
                             to_display = ', '.join(tags)
-                        elif k == 'references':
-                            pass
                         print(f"{str(k).ljust(max_key_length)} | {to_display}")
+                    if k == 'references' and v:
+                        print()
+                        references = [
+                            self.wrapper.get_resource('connections', params={'note': args.id, 'source': s}).json()[0]
+                            for s in v
+                        ]
+                        reference_details = []
+                        for ref in references:
+                            note_name = self.wrapper.get_resource('notes', id=ref['source']).json()['name']
+                            reference_details.append({
+                                'name': note_name,
+                                'comment': ref['comment']
+                            })
+                        print(f"References for {r.get('name')}:")
+                        ref_header = f"{'Name'.ljust(20)} | Comment"
+                        print(ref_header)
+                        print('-' * len(ref_header))
+                        for ref in reference_details:
+                            print(f"{ref['name'].ljust(20)} | {ref['comment']}")
+
                 print()
 
     def mock_add_tag(self, args):
