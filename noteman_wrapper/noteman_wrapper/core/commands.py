@@ -22,13 +22,26 @@ class NotemanActions:
         except Exception as e:
             print(e)
         else:
-            if args.all or params:
-                for r in response.json():
-                    for k, v in r.items():
-                        print(k, v)
-            else:
-                for k, v in response.json().items():
-                    print(k, v)
+            response_data = response.json()
+            if not isinstance(response_data, list):
+                response_data = [response_data]
+
+            for r in response_data:
+                max_key_length = max(len(str(k)) for k in r.keys())
+                header = f"{'Key'.ljust(max_key_length)} | Value"
+                print(header)
+                print('-' * len(header))
+
+                for k, v in r.items():
+                    if v:
+                        to_display = v
+                        if k == 'tags':
+                            tags = [self.wrapper.get_resource('tags', id=t).json()['name'] for t in v]
+                            to_display = ', '.join(tags)
+                        elif k == 'references':
+                            pass
+                        print(f"{str(k).ljust(max_key_length)} | {to_display}")
+                print()
 
     def mock_add_tag(self, args):
         passed = {arg for arg in vars(args) if getattr(args, arg) is not None}
